@@ -2,11 +2,10 @@ from candidate import Candidate
 
 person = Candidate()
 
-def BMI():
-    height = input("What is your height")
-    person.set_height(height)
-    weight = input("What is your weight")
-    person.set_weight(weight)
-    print(f'Height = {person.height} & Weight = {person.weight}')
+print(f'BMI : {person.info["BMI"]} \n'
+      f'Height : {person.info["height"]}'
+)
 
-BMI()
+person.bmi_classifier()
+
+print(person.info['BMI_classifier'])
