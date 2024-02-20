@@ -1,11 +1,17 @@
 from candidate import Candidate
+from pdf_manipulation import Pdf
+
+pdf = Pdf("Testing")
+
 
 person = Candidate()
-
-print(f'BMI : {person.info["BMI"]} \n'
-      f'Height : {person.info["height"]}'
-)
-
 person.bmi_classifier()
+person.macro_calc()
+person.info_stats_pdf_gen()
 
-print(person.info['BMI_classifier'])
+print(person.kcal_breakdown)
+
+
+#pdf.save_pdf()
+
+
