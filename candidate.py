@@ -37,7 +37,7 @@ class Candidate:
                            4: 1.725,
                            5: 1.9}
 
-        self.info["Lifestyle"] = int(input("How often do you work out or want too a week? \n"
+        self.info["lifestyle"] = int(input("How often do you work out or want too a week? \n"
                                            "1 : Rarely (Little to no Exercise) \n"
                                            "2: Light Activity (Light Activity 3-5 days a week)\n"
                                            "3: Moderate (Moderate Exercise 3-5 days a week)\n"
@@ -54,7 +54,7 @@ class Candidate:
         elif self.info["gender"].upper() == "FEMALE":
             self.info["BMR"] = (self.info["weight"] * 10) + (6.25 * self.info["height"]) - (5 * self.info["age"]) - 161
 
-        self.info["BMR"] = self.info["BMR"] * activity_mapper[self.info["Lifestyle"]]
+        self.info["BMR"] = self.info["BMR"] * activity_mapper[self.info["lifestyle"]]
 
         if self.info["goal"] == "LW":
             self.info["Kcal Goal"] = self.info["BMR"] - (self.info["BMR"] / 100 * 15)
