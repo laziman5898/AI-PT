@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+</head>
+<body>
+<h1>My Dashboard</h1>
+{% if current_user.is_authenticated %}
+  Hi {{ current_user.id }} , Welcome {{current_user.name}}!
+
+<-- Comments!-->
+<p>{% for i in user_info%}</p>
+    {{i}} : {{user_info[i]}}
+{%endfor%}
+{% endif %}
+
+<br/>
+<a href="{{url_for('logout')}}">Logout</a> ||
+<a href="{{url_for(info_update)}}">
+</body>
+</html>

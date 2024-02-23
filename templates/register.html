@@ -1,0 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <title>Register</title>
+  </head>
+  <body>
+    <h1>Register</h1>
+
+    <form action="{{url_for('register')}}" method="post">
+      {{form.username.label}} : {{form.username}} <br/>
+      {{form.email.label}} : {{form.email}} </br>
+      {{form.first_name.label}} : {{form.first_name}} <br/>
+      {{form.last_name.label}} {{form.last_name}} </br>
+      {{form.password.label}} : {{form.password}} </br>
+      {{form.submit}}
+      {{ form.csrf_token }}
+
+    </form>
+  <p>Already Have an Account ? <a href="{{url_for('login')}}"> Login Here</a></p>
+  </body>
+</html>

@@ -1,16 +1,18 @@
 from pdf_manipulation import Pdf
+from db_connection import DB_Handler
 
 
 class Candidate:
-    def __init__(self):
+    def __init__(self , data):
 
         self.kcal_breakdown = None
+        self.db = DB_Handler()
         self.info = {
             'name': input("Name ? \n"),
-            'height': float(input("Height in CM \n")),
-            'weight': float(input("Weight in KG \n")),
-            'gender': input("Gender | Male or Female ? \n"),
-            'age': int(input("Age plsss?? \n"))
+            'height': data['height'],
+            'weight': data['weight'],
+            'gender': data['gender'],
+            'age': data['age']
         }
         self.info["BMI"] = (self.info['weight'] / ((self.info['height'] / 100) ** 2)).__round__(2)
 
