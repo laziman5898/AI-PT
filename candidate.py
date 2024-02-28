@@ -8,9 +8,8 @@ class Candidate:
         self.kcal_breakdown = None
         self.db = DB_Handler()
         self.info = {
-            'name': input("Name ? \n"),
-            'height': data['height'],
-            'weight': data['weight'],
+            'height': float(data['height']),
+            'weight': float(data['weight']),
             'gender': data['gender'],
             'age': data['age']
         }
@@ -76,8 +75,8 @@ class Candidate:
                                    "proteins": [int((self.info["Kcal Goal"] * 0.3) / 4), int(self.info["Kcal Goal"] * 0.3)],
                                    "fats": [int((self.info["Kcal Goal"] * 0.3) / 9), int(self.info["Kcal Goal"] * 0.3)]}
 
-    def info_stats_pdf_gen(self):
-        new_pdf = Pdf(f"{self.info['name']} BMI Stats")
+    def info_stats_pdf_gen(self, name):
+        new_pdf = Pdf(f"{name} BMI Stats")
         x_cursor_pdf = 50
         y_cursor_pdf = 700
         for i in self.info:
@@ -85,3 +84,6 @@ class Candidate:
             y_cursor_pdf -= 50
 
         new_pdf.save_pdf()
+
+    def print_person(self):
+        print(self.info)

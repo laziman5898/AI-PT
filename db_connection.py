@@ -31,7 +31,7 @@ class DB_Handler:
     def update_info(self, id ,info):
 
         add_query = f"UPDATE clients_info " \
-                    f"SET height_in_cm = '{info['height']}' , weight_in_kg = '{info['weight']}', gender = '{info['gender']}', age = '{info['age']}'" \
+                    f"SET height_in_cm = '{info['height']}' , weight_in_kg = '{info['weight']}', gender = '{info['gender']}', age = '{info['age']}', bmi = '{info['BMI']}'" \
                     f"WHERE ID = {id};"
 
         add_info_query = f"INSERT INTO clients_info where ID == '{id}' (height_in_cm,weight_in_kg,gender,age)" \
