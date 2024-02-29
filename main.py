@@ -18,6 +18,24 @@ app.secret_key = 'admin'  # Change this!
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+
+def db_person_data_converstion(db_data):
+    height = db_data['height_in_cm']
+    weight = db_data['weight_in_kg']
+    gender = db_data['gender']
+    age = db_data['age']
+    bmi = db_data['bmi']
+
+    data = {'height': height,
+            'weight': weight,
+            'age': age,
+            'gender': gender,
+            'bmi': bmi
+            }
+    person = Candidate(data)
+
+    return person
+
 class User(flask_login.UserMixin):
     pass
 
@@ -79,7 +97,6 @@ def login():
             user = User()
             print("worked")
             user.id = response[0]
-            user.name = "Tom"
             flask_login.login_user(user)
             return redirect(url_for('profile'))
         else:
@@ -106,8 +123,30 @@ def info_update():
     if request.method == "POST":
         data = request.form
         person = Candidate(data)
+        person.bmi_classifier()
         database.update_info(id,person.info)
         return render_template("info_update.html" , form=info_update_form)
+
+@app.route("/Health Goals" , methods=["GET","POST"])
+@flask_login.login_required
+def health_goals():
+    goals_form = html_forms.goals_form()
+    if request.method=="GET":
+        goals_form= html_forms.goals_form()
+        return render_template("health goals.html", form=goals_form)
+
+    if request.method == "POST":
+        data = request.form
+        id = current_user.get_id()
+        user_info = database.get_user_info(id)[0]
+        person = db_person_data_converstion(user_info)
+        person.bmi_classifier()
+        person.set_goals(goal=request.form['goal'], lifestyle=int(request.form['lifestyle']))
+        person.macro_calc()
+        
+        database.update_info_macro_calc(id,person.info)
+
+        return render_template("health goals.html", form=goals_form)
 
 @app.route('/logout')
 def logout():
@@ -126,3 +165,5 @@ def unauthorized_handler():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+

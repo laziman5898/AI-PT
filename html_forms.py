@@ -24,3 +24,8 @@ class info_update_form(Form):
     gender = SelectField("Gender", choices=[('Male', 'Male'), ('Female', 'Female'), ('Unspecifed', 'Not Specified')])
     age = IntegerField("Age", validators=[DataRequired()])
     submit = SubmitField()
+
+class goals_form(Form):
+    lifestyle = SelectField("How active are you ? ", choices=[(1,'Rarely (Little to no Exercise) '), (2, 'Light Activity (Light Activity 3-5 days a week'),(3,"Moderate (Moderate Exercise 3-5 days a week)"),(4,'Very Active (Hard Exercise 6-7 days a week'),(5,' Extra Active (Hard Exercise 6-7 With Physical Job)')])
+    goal = SelectField("What is your goal what do you want to achieve ?" , choices=[("LW", "Lose Weight"), ("M", "Maintaince"),("GW","Gain Weight")])
+    submit = SubmitField('Submit')

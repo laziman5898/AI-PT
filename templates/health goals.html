@@ -1,0 +1,13 @@
+{%extends "base.html"%}
+{%block title%} Health Goals {%endblock%}
+{%block content%}
+<h1>Health Goals</h1>
+
+<form action="{{url_for('health_goals')}}" method="post">
+{{form.lifestyle.label}} {{form.lifestyle}} <br />
+{{form.goal.label}} {{form.goal}}<br />
+{{form.submit}}
+
+{{ form.csrf_token }}
+</form>
+{%endblock%}

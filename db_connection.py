@@ -31,25 +31,32 @@ class DB_Handler:
     def update_info(self, id ,info):
 
         add_query = f"UPDATE clients_info " \
-                    f"SET height_in_cm = '{info['height']}' , weight_in_kg = '{info['weight']}', gender = '{info['gender']}', age = '{info['age']}', bmi = '{info['BMI']}'" \
-                    f"WHERE ID = {id};"
+                    f"SET height_in_cm = '{info['height']}' , weight_in_kg = '{info['weight']}', gender = '{info['gender']}', age = '{info['age']}', bmi = '{info['BMI']}', bmi_classifier = '{info['BMI_classifier']}'" \
+                    f"WHERE clients_login_ID = {id};"
 
-        add_info_query = f"INSERT INTO clients_info where ID == '{id}' (height_in_cm,weight_in_kg,gender,age)" \
-                         f"VALUES('{info['height']}','{info['weight']}','{info['gender']}','{info['age']}')"
+        self.cursor.execute(add_query)
+        self.connection.commit()
+        print("Row Added Successfully")
+
+    def update_info_macro_calc(self, id ,info):
+
+        add_query = f"UPDATE clients_info " \
+                    f"SET BMR = '{info['BMR']}' , goal = '{info['goal']}', lifestyle = '{info['lifestyle']}', kcal_goal = '{info['Kcal Goal']}'" \
+                    f"WHERE clients_login_ID = {id};"
 
         self.cursor.execute(add_query)
         self.connection.commit()
         print("Row Added Successfully")
 
     def info_add_id_and_name(self, data):
-        add_info_query = f"INSERT INTO clients_info(ID, name)" \
+        add_info_query = f"INSERT INTO clients_info(clients_login_ID, name)" \
                          f"VALUES('{data['ID']}','{data['name']}')"
         self.cursor.execute(add_info_query)
         self.connection.commit()
         print("Row Added Successfully")
 
     def get_user(self, data):
-        query = f"SELECT * FROM clients_login where username = '{data['username']}'"
+        query = f"SELECT * FROM clients_login where Username = '{data['username']}'"
         self.cursor.execute(query)
         response = self.cursor.fetchall()
         return response
@@ -91,7 +98,7 @@ class DB_Handler:
                 print("Incorrect Password")
                 return False , "Error"
     def get_user_info(self, id):
-        query = f"SELECT * FROM clients_info where ID = {id}"
+        query = f"SELECT * FROM clients_info where clients_login_ID = {id}"
         self.cursor.execute(query)
         response = self.cursor.fetchall()
 
@@ -99,3 +106,4 @@ class DB_Handler:
         col_names = [col[0] for col in desc]
         data = [dict(zip(col_names, row)) for row in response]
         return data
+

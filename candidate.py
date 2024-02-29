@@ -30,6 +30,9 @@ class Candidate:
             self.info['BMI_classifier'] = "Obese"
         elif self.info["BMI"] >= 40:
             self.info['BMI_classifier'] = "Serverly Obese"
+    def set_goals(self,goal,lifestyle):
+        self.info['goal'] = goal
+        self.info['lifestyle'] = lifestyle
 
     def macro_calc(self):
         activity_mapper = {1: 1.2,
@@ -38,17 +41,6 @@ class Candidate:
                            4: 1.725,
                            5: 1.9}
 
-        self.info["lifestyle"] = int(input("How often do you work out or want too a week? \n"
-                                           "1 : Rarely (Little to no Exercise) \n"
-                                           "2: Light Activity (Light Activity 3-5 days a week)\n"
-                                           "3: Moderate (Moderate Exercise 3-5 days a week)\n"
-                                           "4: Very Active (Hard Exercise 6-7 days a week)\n"
-                                           "5: Extra Active (Hard Exercise 6-7 With Physical Job)\n"))
-
-        self.info["goal"] = input("What is your goal ? \n"
-                                  "Lose Weight (LW) \n"
-                                  "Maintance Calories (M) \n"
-                                  "Gain Weight (GW)")
 
         if self.info["gender"].upper() == "MALE":
             self.info["BMR"] = (self.info["weight"] * 10) + (6.25 * self.info["height"]) - (5 * self.info["age"]) + 5
@@ -60,18 +52,18 @@ class Candidate:
         if self.info["goal"] == "LW":
             self.info["Kcal Goal"] = self.info["BMR"] - (self.info["BMR"] / 100 * 15)
 
-            self.kcal_breakdown = {"carbohydrates": [int((self.info["Kcal Goal"] * 0.4) / 4), int(self.info["Kcal Goal"] * 0.4)],
+            self.info['kcal_breakdown']= {"carbohydrates": [int((self.info["Kcal Goal"] * 0.4) / 4), int(self.info["Kcal Goal"] * 0.4)],
                                    "proteins": [int((self.info["Kcal Goal"] * 0.4) / 4), int(self.info["Kcal Goal"] * 0.4)],
                                    "fats": [int((self.info["Kcal Goal"] * 0.2) / 9), int(self.info["Kcal Goal"] * 0.2)]}
 
         elif self.info["goal"] == "M":
             self.info["Kcal Goal"] = self.info["BMR"]
-            self.kcal_breakdown = {"carbohydrates": [int((self.info["Kcal Goal"] * 0.4) / 4), int(self.info["Kcal Goal"] * 0.4)],
+            self.info['kcal_breakdown'] = {"carbohydrates": [int((self.info["Kcal Goal"] * 0.4) / 4), int(self.info["Kcal Goal"] * 0.4)],
                                    "proteins": [int((self.info["Kcal Goal"] * 0.3) / 4), int(self.info["Kcal Goal"] * 0.3)],
                                    "fats": [int((self.info["Kcal Goal"] * 0.3) / 9), int(self.info["Kcal Goal"] * 0.3)]}
         elif self.info["goal"] == "GW":
             self.info["Kcal Goal"] = self.info["BMR"] + 500
-            self.kcal_breakdown = {"carbohydrates": [int((self.info["Kcal Goal"] * 0.4) / 4), int(self.info["Kcal Goal"] * 0.4)],
+            self.info['kcal_breakdown'] = {"carbohydrates": [int((self.info["Kcal Goal"] * 0.4) / 4), int(self.info["Kcal Goal"] * 0.4)],
                                    "proteins": [int((self.info["Kcal Goal"] * 0.3) / 4), int(self.info["Kcal Goal"] * 0.3)],
                                    "fats": [int((self.info["Kcal Goal"] * 0.3) / 9), int(self.info["Kcal Goal"] * 0.3)]}
 
