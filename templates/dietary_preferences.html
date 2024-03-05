@@ -1,0 +1,14 @@
+{%extends "base.html"%}
+{%block title%}Dietary Preferences{%endblock%}
+{%block content%}
+<h1>Dietary Preference</h1>
+
+<form action="{{url_for('dietary_preferences')}}" method="post">
+    <h2>{{form.diet.label}}</h2>
+    {{form.diet}}
+    <br />
+    <h2>Intolerances</h2>
+    {{form.intolerances}}
+    {{form.submit}}
+</form>
+{%endblock%}
