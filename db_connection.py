@@ -28,6 +28,16 @@ class DB_Handler:
         else:
             print("DB is not connected")
 
+    def macro_data_exists(self, id):
+        query = f"SELECT * FROM macro_breakdown where clients_login_id = '{id}' "
+        self.cursor.execute(query)
+        response = self.cursor.fetchall()
+
+        if not response:
+            return False
+        else:
+            return True
+
     def update_info(self, id ,info):
 
         add_query = f"UPDATE clients_info " \
@@ -40,17 +50,33 @@ class DB_Handler:
 
     def update_info_macro_calc(self, id ,info):
 
-        add_query = f"UPDATE clients_info " \
+        update_clients_info_query = f"UPDATE clients_info " \
                     f"SET BMR = '{info['BMR']}' , goal = '{info['goal']}', lifestyle = '{info['lifestyle']}', kcal_goal = '{info['Kcal Goal']}'" \
                     f"WHERE clients_login_ID = {id};"
 
-        self.cursor.execute(add_query)
+        self.cursor.execute(update_clients_info_query)
         self.connection.commit()
-        print("Row Added Successfully")
+
+        if self.macro_data_exists(id):
+            update_macro_breakdown_query = f"UPDATE macro_breakdown " \
+                                        f"SET proten_intake = {info['kcal_breakdown']['proteins'][0]}, carb_intake = {info['kcal_breakdown']['carbohydrates'][0]}, fat_intake = {info['kcal_breakdown']['fats'][0]}, protien_kcal={info['kcal_breakdown']['proteins'][1]} , carb_kcal={info['kcal_breakdown']['carbohydrates'][1]}, fat_kcal={info['kcal_breakdown']['fats'][1]} " \
+                                        f"WHERE clients_login_ID = {id}"
+
+            self.cursor.execute(update_macro_breakdown_query)
+            self.connection.commit()
+
+            print("Row  Successfully")
+        else:
+            update_macro_breakdown_query =  f"INSERT INTO macro_breakdown(clients_login_ID , proten_intake, carb_intake , fat_intake, protien_kcal,carb_kcal,fat_kcal)" \
+                                            f"VALUES('{id}','{info['kcal_breakdown']['proteins'][0]}','{info['kcal_breakdown']['carbohydrates'][0]}',{info['kcal_breakdown']['fats'][0]},'{info['kcal_breakdown']['proteins'][1]}','{info['kcal_breakdown']['carbohydrates'][1]}',{info['kcal_breakdown']['fats'][1]})"
+            self.cursor.execute(update_macro_breakdown_query)
+            self.connection.commit()
+
+        print("Row Added")
 
     def info_add_id_and_name(self, data):
-        add_info_query = f"INSERT INTO clients_info(clients_login_ID, name)" \
-                         f"VALUES('{data['ID']}','{data['name']}')"
+        add_info_query = f"INSERT INTO clients_info(clients_login_ID, name, spoonacular_username,spoonacular_password,spoonacular_hash)" \
+                         f"VALUES('{data['ID']}','{data['name']}', '{data['spoonacular_username']}', '{data['spoonacular_password']}','{data['spoonacular_hash']}')"
         self.cursor.execute(add_info_query)
         self.connection.commit()
         print("Row Added Successfully")
@@ -106,4 +132,5 @@ class DB_Handler:
         col_names = [col[0] for col in desc]
         data = [dict(zip(col_names, row)) for row in response]
         return data
+
 

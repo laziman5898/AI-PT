@@ -10,6 +10,7 @@ from candidate import Candidate
 from pdf_manipulation import Pdf
 from db_connection import DB_Handler
 from AI_Handler import AI_Handler
+from spoonacular_API import Spoonacular_Handler
 
 
 app = Flask(__name__)
@@ -75,7 +76,15 @@ def register():
         data = request.form
         database.register_user(data)
         user_details = database.get_user(data)[0]
-        v = {"ID" : user_details[0], "username" : {user_details[1]}, "name" : f'{user_details[2]} {user_details[3]}'}
+
+        # Add some verification so if user already exists ...
+        spoonacular = Spoonacular_Handler(username=user_details[1], first_name=user_details[2], last_name=user_details[3], email=user_details[4])
+        r = spoonacular.create_user()
+
+        v = {"ID" : user_details[0], "username" : {user_details[1]}, "name" : f'{user_details[2]} {user_details[3]}' , 'spoonacular_username':r['username'],'spoonacular_password':r['spoonacularPassword'],'spoonacular_hash': r['hash']}
+
+
+
         database.info_add_id_and_name(v)
 
         return redirect("login")
@@ -145,8 +154,22 @@ def health_goals():
         person.macro_calc()
         
         database.update_info_macro_calc(id,person.info)
+        print(person.info['kcal_breakdown'])
 
         return render_template("health goals.html", form=goals_form)
+
+@app.route("/Dietary Preferences" , methods=["GET" , "POST"])
+@flask_login.login_required
+def dietary_preferences():
+    preference = html_forms.dietary_preference()
+
+    if request.method == "GET":
+        return render_template("dietary_preferences.html", form=preference)
+    elif request.method == "POST":
+        diet_requirements = list(request.form.listvalues())
+        print(diet_requirements[0])
+
+        return render_template("dietary_preferences.html", form=preference)
 
 @app.route('/logout')
 def logout():
